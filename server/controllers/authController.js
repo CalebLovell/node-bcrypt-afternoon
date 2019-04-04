@@ -25,6 +25,19 @@ module.exports = {
     const { username, password } = req.body;
     const db = req.app.get('db');
 
-    
+    const foundUser = await db.get_user([username]);
+    const user = foundUser[0];
+
+    if (!user) {
+        return res.status(401).send(`Parece que vc não tá no sistema. Favor de registrar como usador novo antes de fazer o login.`)
+    }
+
+    const isAuthenticated = bcrypt.compareSync(password, user.hash);
+    if (!isAuthenticated) {
+        return res.status(403).send(`esse chave não da mano`)
+    };
+
+    req.session.user = { isAdmin: user.is_admin, id: user.id, username: user.username };
+    return res.send(req.session.user);
   },
 };

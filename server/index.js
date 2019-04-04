@@ -23,7 +23,7 @@ app.use(session({
 }));
 
 app.post('/auth/register', ac.register);
-app.post('/auth/login' ac.login)
+app.post('/auth/login', ac.login)
 
 app.listen(SERVER_PORT, () => {
     console.log(`o servidor tá correndo aqui: ${SERVER_PORT}`);
